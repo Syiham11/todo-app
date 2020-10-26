@@ -8,7 +8,8 @@ import (
 
 type DBLayer interface {
 	AddUser(models.User) error
-	GetAllUsers() ([]models.User, error)
+	AddTodo(models.Todo) error
+	GetAllTodos() ([]models.Todo, error)
 }
 
 type DBORM struct {

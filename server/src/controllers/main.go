@@ -7,7 +7,8 @@ import (
 
 type HandlerInterface interface {
 	AddUser(c *gin.Context)
-	GetAllUsers(c *gin.Context)
+	AddTodo(c *gin.Context)
+	GetTodos(c *gin.Context)
 }
 
 type Handler struct {

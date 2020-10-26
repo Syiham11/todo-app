@@ -30,10 +30,15 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 			c.JSON(http.StatusOK, gin.H{"name": name})
 		})
 
-		apiGroup.GET("/users", handler.GetAllUsers)
 		userGroup := apiGroup.Group("/user")
 		{
 			userGroup.POST("", handler.AddUser)
+		}
+
+		apiGroup.GET("/todos", handler.GetTodos)
+		todoGroup := apiGroup.Group("/todo")
+		{
+			todoGroup.POST("", handler.AddTodo)
 		}
 	}
 

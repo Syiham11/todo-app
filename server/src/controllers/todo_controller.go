@@ -6,33 +6,39 @@ import (
 	"github.com/juseongkr/todo-app/server/src/models"
 )
 
-func (h *Handler) AddUser(c *gin.Context) {
+func (h *Handler) AddTodo(c *gin.Context) {
 	if h.db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}
 
-	var json models.User
-	err := c.ShouldBindJSON(&json)
+	var todo models.Todo
+	err := c.ShouldBindJSON(&todo)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = h.db.AddTodo(todo)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.AbortWithStatus(http.StatusOK)
 }
 
-func (h *Handler) GetAllUsers(c *gin.Context) {
+func (h *Handler) GetTodos(c *gin.Context) {
 	if h.db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}
 
-	users, err := h.db.GetAllUsers()
+	todos, err := h.db.GetAllTodos()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, todos)
 }
