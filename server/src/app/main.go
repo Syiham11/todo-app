@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/static"
 	"github.com/gin-contrib/sessions"
-	"net/http"
 	"io"
 	"os"
 )
@@ -28,34 +27,26 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 
 	r.Use(static.ServeRoot("/", "../public/build"))
 	r.Use(sessions.Sessions("session-cookie", store))
-	r.Use(middlewares.MyMiddleware())
 
 	apiGroup := r.Group("/api")
 	{
-		apiGroup.GET("/ping", func(c *gin.Context) {
-			name := c.Query("name")
-			session := sessions.Default(c)
-
-			session.Set("session-uid", 1)
-			session.Save()
-
-			c.JSON(http.StatusOK, gin.H{"name": name})
-		})
-
 		authGroup := apiGroup.Group("/auth")
 		{
 			authGroup.GET("/check", handler.AuthCheck)
-			authGroup.POST("/signin", handler.AuthSignIn)
-			authGroup.POST("/signup", handler.AuthSignUp)
-			authGroup.GET("/signout", handler.AuthSignOut)
+			authGroup.POST("/signin", middlewares.IsNotSigned(), handler.AuthSignIn)
+			authGroup.POST("/signup", middlewares.IsNotSigned(), handler.AuthSignUp)
+			authGroup.GET("/signout", middlewares.IsSigned(), handler.AuthSignOut)
 		}
 
 		apiGroup.GET("/todos", handler.GetTodos)
 		todoGroup := apiGroup.Group("/todo")
 		{
-			todoGroup.POST("", handler.AddTodo)
+			todoGroup.POST("", middlewares.IsSigned(), handler.AddTodo)
 		}
 	}
+
+	r.Use(middlewares.ErrorHandler())
+	r.Use(middlewares.EndPointHandler())
 
 	return endless.ListenAndServe(":" + port, r)
 }

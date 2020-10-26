@@ -8,11 +8,6 @@ import (
 )
 
 func (h *Handler) AuthCheck(c *gin.Context) {
-	if h.db == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
-		return
-	}
-
 	session := sessions.Default(c)
 	if session.Get("session-username") != nil {
 		c.AbortWithStatus(http.StatusOK)
@@ -71,18 +66,11 @@ func (h *Handler) AuthSignIn(c *gin.Context) {
 }
 
 func (h *Handler) AuthSignOut(c *gin.Context) {
-	if h.db == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
-		return
-	}
-
 	session := sessions.Default(c)
-	if session.Get("session-username") != nil {
-		c.AbortWithStatus(http.StatusOK)
-		return
-	}
+	session.Clear()
+	session.Options(sessions.Options{MaxAge: -1})
+	session.Save()
+	c.SetCookie("session-cookie", "", -1, "/", "", false, true) // Delete cookie
 
-	session.Delete("session-username")
-
-	c.AbortWithStatus(http.StatusOK)
+	c.Redirect(http.StatusMovedPermanently, "/")
 }
