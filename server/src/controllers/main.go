@@ -1,12 +1,19 @@
 package controllers
 
 import (
+	"os"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/juseongkr/todo-app/server/src/services"
 )
 
 type HandlerInterface interface {
-	AddUser(c *gin.Context)
+	AuthCheck(c *gin.Context)
+	AuthSignUp(c *gin.Context)
+	AuthSignIn(c *gin.Context)
+	AuthSignOut(c *gin.Context)
+
 	AddTodo(c *gin.Context)
 	GetTodos(c *gin.Context)
 }
@@ -24,3 +31,21 @@ func NewHandler(url string) (*Handler, error) {
 	return &Handler{db: database}, nil
 }
 
+func NewStore() (sessions.Store, error) {
+	redis_url := os.Getenv("REDIS_PATH")
+	redis_pw := os.Getenv("REDIS_PW")
+	secret_key := os.Getenv("SECRET_KEY")
+	store, err := redis.NewStore(10, "tcp", redis_url, redis_pw, []byte(secret_key))
+	if err != nil {
+		return nil, err
+	}
+
+	store.Options(sessions.Options{
+		MaxAge: 1000 * 60 * 60 * 24 * 3,
+		Path: "/",
+		Secure: false, // true, https only
+		HttpOnly: true,
+	})
+
+	return store, nil
+}

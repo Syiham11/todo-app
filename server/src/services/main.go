@@ -7,7 +7,9 @@ import (
 )
 
 type DBLayer interface {
-	AddUser(models.User) error
+	CreateUser(models.User) error
+	SignInUser(models.User) error
+
 	AddTodo(models.Todo) error
 	GetAllTodos() ([]models.Todo, error)
 }

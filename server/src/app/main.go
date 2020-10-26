@@ -4,10 +4,11 @@ import (
 	"github.com/juseongkr/todo-app/server/src/controllers"
 	"github.com/juseongkr/todo-app/server/src/middlewares"
 	"github.com/fvbock/endless"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"io"
+	"github.com/gin-contrib/static"
+	"github.com/gin-contrib/sessions"
 	"net/http"
+	"io"
 	"os"
 )
 
@@ -20,19 +21,33 @@ func Logger() {
 func RunServerWithHandler(port string, handler controllers.HandlerInterface) error {
 	r := gin.Default()
 
+	store, err := controllers.NewStore()
+	if err != nil {
+		return err
+	}
+
 	r.Use(static.ServeRoot("/", "../public/build"))
+	r.Use(sessions.Sessions("session-cookie", store))
 	r.Use(middlewares.MyMiddleware())
 
 	apiGroup := r.Group("/api")
 	{
 		apiGroup.GET("/ping", func(c *gin.Context) {
 			name := c.Query("name")
+			session := sessions.Default(c)
+
+			session.Set("session-uid", 1)
+			session.Save()
+
 			c.JSON(http.StatusOK, gin.H{"name": name})
 		})
 
-		userGroup := apiGroup.Group("/user")
+		authGroup := apiGroup.Group("/auth")
 		{
-			userGroup.POST("", handler.AddUser)
+			authGroup.GET("/check", handler.AuthCheck)
+			authGroup.POST("/signin", handler.AuthSignIn)
+			authGroup.POST("/signup", handler.AuthSignUp)
+			authGroup.GET("/signout", handler.AuthSignOut)
 		}
 
 		apiGroup.GET("/todos", handler.GetTodos)
@@ -42,14 +57,14 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 		}
 	}
 
-	return endless.ListenAndServe(":"+port, r)
+	return endless.ListenAndServe(":" + port, r)
 }
 
 func RunServer() error {
-	url := os.Getenv("DB_PATH")
 	port := os.Getenv("PORT")
+	db_url := os.Getenv("DB_PATH")
 
-	handler, err := controllers.NewHandler(url)
+	handler, err := controllers.NewHandler(db_url)
 	if err != nil {
 		return err
 	}
