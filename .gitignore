@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,vim,vscode,sublimetext,dotenv,go,godot
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,vim,vscode,sublimetext,dotenv,go,godot
 
-public/build/
+server/build/
 
 ### dotenv ###
 .env

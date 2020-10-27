@@ -1,9 +1,11 @@
 package controllers
 
 import (
-	"net/http"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/juseongkr/todo-app/server/src/models"
+	"net/http"
+	"strconv"
 )
 
 func (h *Handler) AddTodo(c *gin.Context) {
@@ -19,7 +21,10 @@ func (h *Handler) AddTodo(c *gin.Context) {
 		return
 	}
 
-	err = h.db.AddTodo(todo)
+	session := sessions.Default(c)
+	username := session.Get("session-username").(string)
+
+	err = h.db.AddTodo(todo, username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -41,4 +46,25 @@ func (h *Handler) GetTodos(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, todos)
+}
+
+func (h *Handler) GetTodo(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if h.db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		return
+	}
+
+	todo, err := h.db.GetTodo(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, todo)
 }

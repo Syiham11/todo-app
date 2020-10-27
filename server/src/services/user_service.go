@@ -1,9 +1,9 @@
 package services
 
 import (
+	"errors"
 	"github.com/juseongkr/todo-app/server/src/models"
 	"golang.org/x/crypto/bcrypt"
-	"errors"
 )
 
 func HashPassword(password string) (string, error) {

@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"net/http"
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/juseongkr/todo-app/server/src/models"
+	"net/http"
 )
 
 func (h *Handler) AuthCheck(c *gin.Context) {

@@ -1,12 +1,12 @@
 package app
 
 import (
+	"github.com/fvbock/endless"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 	"github.com/juseongkr/todo-app/server/src/controllers"
 	"github.com/juseongkr/todo-app/server/src/middlewares"
-	"github.com/fvbock/endless"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/static"
-	"github.com/gin-contrib/sessions"
 	"io"
 	"os"
 )
@@ -25,7 +25,7 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 		return err
 	}
 
-	r.Use(static.ServeRoot("/", "../public/build"))
+	r.Use(static.Serve("/", static.LocalFile("build", true)))
 	r.Use(sessions.Sessions("session-cookie", store))
 
 	apiGroup := r.Group("/api")
@@ -42,13 +42,16 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 		todoGroup := apiGroup.Group("/todo")
 		{
 			todoGroup.POST("", middlewares.IsSigned(), handler.AddTodo)
+			todoGroup.PUT("/:id", middlewares.IsSigned(), handler.GetTodo)
+			todoGroup.DELETE("/:id", middlewares.IsSigned(), handler.GetTodo)
+			todoGroup.GET("/:id", handler.GetTodo)
 		}
 	}
 
 	r.Use(middlewares.ErrorHandler())
 	r.Use(middlewares.EndPointHandler())
 
-	return endless.ListenAndServe(":" + port, r)
+	return endless.ListenAndServe(":"+port, r)
 }
 
 func RunServer() error {

@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"os"
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
+	"github.com/gin-gonic/gin"
 	"github.com/juseongkr/todo-app/server/src/services"
+	"os"
 )
 
 type HandlerInterface interface {
@@ -15,6 +15,7 @@ type HandlerInterface interface {
 	AuthSignOut(c *gin.Context)
 
 	AddTodo(c *gin.Context)
+	GetTodo(c *gin.Context)
 	GetTodos(c *gin.Context)
 }
 
@@ -41,9 +42,9 @@ func NewStore() (sessions.Store, error) {
 	}
 
 	store.Options(sessions.Options{
-		MaxAge: 1000 * 60 * 60 * 24 * 3,
-		Path: "/",
-		Secure: false, // true, https only
+		MaxAge:   1000 * 60 * 60 * 24 * 3,
+		Path:     "/",
+		Secure:   false, // true, https only
 		HttpOnly: true,
 	})
 
