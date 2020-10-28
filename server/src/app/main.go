@@ -27,7 +27,7 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 
 	r.Use(static.Serve("/", static.LocalFile("build", true)))
 	r.Use(sessions.Sessions("session-cookie", store))
-
+ 
 	apiGroup := r.Group("/api")
 	{
 		authGroup := apiGroup.Group("/auth")
@@ -42,9 +42,12 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 		todoGroup := apiGroup.Group("/todo")
 		{
 			todoGroup.POST("", middlewares.IsSigned(), handler.AddTodo)
-			todoGroup.PUT("/:id", middlewares.IsSigned(), handler.GetTodoByID)
-			todoGroup.DELETE("/:id", middlewares.IsSigned(), handler.GetTodoByID)
-			todoGroup.GET("/:id", handler.GetTodoByID)
+
+			todoGroup.GET("/id/:id", handler.GetTodoByID)
+			todoGroup.PUT("/id/:id", middlewares.IsSigned(), handler.GetTodoByID)
+			todoGroup.DELETE("/id/:id", middlewares.IsSigned(), handler.GetTodoByID)
+
+			todoGroup.GET("/uploader/:id", handler.GetTodosByUploader)
 		}
 	}
 

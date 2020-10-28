@@ -20,3 +20,7 @@ func (db *DBORM) GetAllTodos() (todos []models.TodoDto, err error) {
 func (db *DBORM) GetTodoByID(id int) (todo models.TodoDto, err error) {
 	return todo, db.Table("Todos").Where("id = ?", id).First(&todo).Error
 }
+
+func (db *DBORM) GetTodosByUploader(uploader int) (todos []models.TodoDto, err error) {
+	return todos, db.Table("Todos").Find(&todos, "uploader = ?", uploader).Error
+}

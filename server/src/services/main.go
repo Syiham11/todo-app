@@ -13,6 +13,7 @@ type DBLayer interface {
 	AddTodo(models.Todo, string) error
 	GetAllTodos() ([]models.TodoDto, error)
 	GetTodoByID(int) (models.TodoDto, error)
+	GetTodosByUploader(int) ([]models.TodoDto, error)
 }
 
 type DBORM struct {

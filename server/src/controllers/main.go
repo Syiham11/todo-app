@@ -16,6 +16,7 @@ type HandlerInterface interface {
 
 	AddTodo(c *gin.Context)
 	GetTodoByID(c *gin.Context)
+	GetTodosByUploader(c *gin.Context)
 	GetTodos(c *gin.Context)
 }
 

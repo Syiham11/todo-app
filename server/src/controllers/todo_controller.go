@@ -68,3 +68,24 @@ func (h *Handler) GetTodoByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, todo)
 }
+
+func (h *Handler) GetTodosByUploader(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if h.db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		return
+	}
+
+	todos, err := h.db.GetTodosByUploader(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, todos)
+}
