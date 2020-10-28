@@ -48,7 +48,7 @@ func (h *Handler) GetTodos(c *gin.Context) {
 	c.JSON(http.StatusOK, todos)
 }
 
-func (h *Handler) GetTodo(c *gin.Context) {
+func (h *Handler) GetTodoByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Params.ByName("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -60,7 +60,7 @@ func (h *Handler) GetTodo(c *gin.Context) {
 		return
 	}
 
-	todo, err := h.db.GetTodo(id)
+	todo, err := h.db.GetTodoByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return

@@ -42,9 +42,9 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 		todoGroup := apiGroup.Group("/todo")
 		{
 			todoGroup.POST("", middlewares.IsSigned(), handler.AddTodo)
-			todoGroup.PUT("/:id", middlewares.IsSigned(), handler.GetTodo)
-			todoGroup.DELETE("/:id", middlewares.IsSigned(), handler.GetTodo)
-			todoGroup.GET("/:id", handler.GetTodo)
+			todoGroup.PUT("/:id", middlewares.IsSigned(), handler.GetTodoByID)
+			todoGroup.DELETE("/:id", middlewares.IsSigned(), handler.GetTodoByID)
+			todoGroup.GET("/:id", handler.GetTodoByID)
 		}
 	}
 

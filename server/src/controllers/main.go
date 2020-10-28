@@ -15,7 +15,7 @@ type HandlerInterface interface {
 	AuthSignOut(c *gin.Context)
 
 	AddTodo(c *gin.Context)
-	GetTodo(c *gin.Context)
+	GetTodoByID(c *gin.Context)
 	GetTodos(c *gin.Context)
 }
 
