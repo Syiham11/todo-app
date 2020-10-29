@@ -2,7 +2,7 @@ import { State, Action } from '../types';
 
 export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
-        case 'GET_TODOS':
+        case 'SET_TODOS':
             return {
                 ...state,
                 todos: {
@@ -31,7 +31,7 @@ export const reducer = (state: State, action: Action): State => {
             delete todo.todos[action.payload.id];
 
             return todo;
-        case 'GET_USER':
+        case 'SET_USER':
             return {
                 ...state,
                 uid: action.payload,

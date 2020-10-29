@@ -71,14 +71,14 @@ const Board: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [tab, setTab] = React.useState(0);
-  const [error, setError] =React.useState('');
+  const [, setError] =React.useState('');
   const [{ todos }, dispatch] = useStateValue();
 
   React.useEffect(() => {
     void (async() => {
       try {
         const { data: todos } = await axios.get<Array<Todo>>(`${baseUrl}/todos`);
-        dispatch({ type: 'GET_TODOS', payload: todos });
+        dispatch({ type: 'SET_TODOS', payload: todos });
       } catch (err) {
         console.log(err);
       }
@@ -91,16 +91,11 @@ const Board: React.FC = () => {
 
   const updateTodo = async (todo: Todo): Promise<void> => {
     try {
-      const updated: Todo = {
-        ...todo,
-        flag: !todo.flag,
-      }
-
-      await axios.put<Todo>(`${baseUrl}/todo/id/${todo.id}`, updated);
-      dispatch({ type: 'ADD_TODO', payload: updated });
+      await axios.put<Todo>(`${baseUrl}/todo/id/${todo.id}`, todo);
+      dispatch({ type: 'ADD_TODO', payload: todo });
     } catch (err) {
-      console.log(err);
       setError(err!.response!.data!.error);
+      console.log(err);
     }
   }
 
@@ -109,8 +104,8 @@ const Board: React.FC = () => {
       await axios.delete<unknown>(`${baseUrl}/todo/id/${todo.id}`);
       dispatch({ type: 'DEL_TODO', payload: todo});
     } catch (err) {
-      console.log(err);
       setError(err!.response!.data!.error);
+      console.log(err);
     }
   }
 

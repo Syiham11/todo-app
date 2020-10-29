@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -110,7 +111,9 @@ const MenuBar: React.FC = () => {
       <AppBar position="fixed" style={ { background: '#2E3B55' } }>
         <Toolbar>
           <Typography className={ classes.title } variant="h6" noWrap>
-            Todo
+            <Link href="/" color="inherit">
+              Home
+            </Link>
           </Typography>
           <div className={ classes.grow } />
           <div className={ classes.sectionDesktop }>

@@ -25,10 +25,10 @@ export type Action =
     type: 'DEL_TODO';
     payload: Todo;
 } | {
-    type: 'GET_TODOS';
+    type: 'SET_TODOS';
     payload: Array<Todo>;
 } | {
-    type: 'GET_USER';
+    type: 'SET_USER';
     payload: User;
 };
 
