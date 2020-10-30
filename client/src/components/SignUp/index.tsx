@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { Formik, Field, Form } from 'formik';
-import { baseUrl, pwRegex } from '../constants';
+import { baseUrl, pwRegex } from '../../constants';
 import { TextField } from 'formik-material-ui';
 import { useHistory } from 'react-router-dom';
 

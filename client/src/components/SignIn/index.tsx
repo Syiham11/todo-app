@@ -14,7 +14,7 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import { Formik, Field, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useHistory } from 'react-router-dom';
-import { baseUrl } from '../constants';
+import { baseUrl } from '../../constants';
 
 interface Values {
   username: string;

@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { Todo } from '../types';
+import { Todo } from '../../types';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {

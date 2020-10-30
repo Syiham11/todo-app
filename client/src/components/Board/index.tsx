@@ -8,10 +8,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
 import Box from '@material-ui/core/Box';
-import Contents from './Contents';
-import { useStateValue } from '../state';
-import { baseUrl } from '../constants';
-import { Todo } from '../types';
+import Contents from '../Contents';
+import { useStateValue } from '../../state';
+import { baseUrl } from '../../constants';
+import { Todo } from '../../types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,7 +71,7 @@ const Board: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [tab, setTab] = React.useState(0);
-  const [, setError] =React.useState('');
+  const [, setError] = React.useState('');
   const [{ todos }, dispatch] = useStateValue();
 
   React.useEffect(() => {
