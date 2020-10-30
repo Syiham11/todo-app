@@ -72,5 +72,5 @@ func (h *Handler) AuthSignOut(c *gin.Context) {
 	session.Save()
 	c.SetCookie("session-cookie", "", -1, "/", "", false, true) // Delete cookie
 
-	c.Redirect(http.StatusMovedPermanently, "/")
+	c.AbortWithStatus(http.StatusOK)
 }

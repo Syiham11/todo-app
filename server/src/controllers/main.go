@@ -43,7 +43,7 @@ func NewStore() (sessions.Store, error) {
 	}
 
 	store.Options(sessions.Options{
-		MaxAge:   1000 * 60 * 60 * 24 * 3,
+		MaxAge:   60 * 60 * 24 * 3,
 		Path:     "/",
 		Secure:   false, // true, https only
 		HttpOnly: true,

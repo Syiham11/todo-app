@@ -9,7 +9,8 @@ type Todo struct {
 	Uploader    int    `gorm:"column:uploader" json:"uploader"`
 	Title       string `gorm:"column:title" json:"title" binding:"required"`
 	Description string `gorm:"column:description" json:"description" binding:"required"`
-	Flag        bool   `gorm:column:flag" json:"flag"`
+	Favorite    bool   `gorm:column:favorite" json:"favorite"`
+	Complete    bool   `gorm:column:complete" json:"complete"`
 }
 
 type TodoDto struct {
@@ -17,7 +18,7 @@ type TodoDto struct {
 	Uploader    int    `json:"uploader"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Flag        bool   `json:"flag"`
+	Favorite    bool   `json:"favorite"`
 }
 
 func (Todo) TableName() string {

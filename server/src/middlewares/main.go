@@ -4,13 +4,14 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"log"
 )
 
 func IsSigned() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		if session.Get("session-username") == nil {
-			c.AbortWithStatus(http.StatusOK)
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
@@ -22,7 +23,7 @@ func IsNotSigned() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		if session.Get("session-username") != nil {
-			c.AbortWithStatus(http.StatusOK)
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
