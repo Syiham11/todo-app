@@ -15,6 +15,7 @@ import { Formik, Field, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useHistory } from 'react-router-dom';
 import { baseUrl } from '../../constants';
+import { useStateValue } from '../../state';
 
 interface Values {
   username: string;
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const SignIn: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const [, dispatch] = useStateValue();
   const [error, setError] = React.useState<string>('');
   const initValue: Values = {
     username: '',
@@ -63,6 +65,8 @@ const SignIn: React.FC = () => {
   const handleSubmit = async ({ username, password }: Values): Promise<void> => {
     try {
       await axios.post<any>(`${baseUrl}/auth/signin`, { username, password });
+      dispatch({ type: 'SET_USER', payload: true });
+      dispatch({ type: 'SIGNIN', payload: true });
       history.push('/');
     } catch (err) {
       setError(err!.response!.data!.error);

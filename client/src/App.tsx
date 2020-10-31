@@ -7,6 +7,8 @@ import Board from './components/Board';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import AlertBar from './components/AlertBar';
+import PostButton from './components/PostButton';
 
 const App: React.FC = () => {
   return (
@@ -14,6 +16,7 @@ const App: React.FC = () => {
       <Helmet>
         <title>Todo App</title>
       </Helmet>
+      <AlertBar />
       <Router>
         <MenuBar />
         <Switch>
@@ -22,6 +25,7 @@ const App: React.FC = () => {
           <Route path="/" render={ () => <Board /> } exact />
         </Switch>
       </Router>
+      <PostButton />
       <Footer />
     </React.Fragment>
   );

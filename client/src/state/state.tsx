@@ -3,7 +3,9 @@ import { State, Action, StateProviderProps } from '../types';
 
 const initState: State = {
     todos: { },
-    uid: { id: null },
+    auth: false,
+    signin: false,
+    signout: false,
 }
 
 export const StateContext: React.Context<[State, React.Dispatch<Action>]> = React.createContext<[State, React.Dispatch<Action>]>([

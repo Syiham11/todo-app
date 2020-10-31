@@ -6,15 +6,13 @@ export interface Todo {
     flag?: boolean;
 }
 
-export interface User {
-    id: number | null;
-}
-
 export type State = {
     todos: {
         [id: number]: Todo,
     },
-    uid: User,
+    auth: boolean,
+    signin: boolean,
+    signout: boolean,
 }
 
 export type Action =
@@ -29,7 +27,13 @@ export type Action =
     payload: Array<Todo>;
 } | {
     type: 'SET_USER';
-    payload: User;
+    payload: boolean;
+} | {
+    type: 'SIGNIN';
+    payload: boolean;
+} | {
+    type: 'SIGNOUT';
+    payload: boolean;
 };
 
 export type StateProviderProps = {
