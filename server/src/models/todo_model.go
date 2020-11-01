@@ -19,6 +19,7 @@ type TodoDto struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Favorite    bool   `json:"favorite"`
+	Complete    bool   `json:"complete"`
 }
 
 func (Todo) TableName() string {
