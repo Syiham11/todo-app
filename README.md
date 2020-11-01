@@ -57,7 +57,7 @@ Before getting started, you need ```.env``` file at ```server/``` following the 
 ```$ go run ./src/main.go```
 
 ## Docker build
-```$ docker build -t todo .```
+```$ sudo docker build -t todo .```
 
 ## Docker run
 ```$ sudo docker run -it -p 8000:8000 todo```
