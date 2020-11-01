@@ -34,8 +34,18 @@ export const reducer = (state: State, action: Action): State => {
         case 'SET_USER':
             return {
                 ...state,
-                uid: action.payload,
+                auth: action.payload,
             };
+        case 'SIGNIN':
+            return {
+                ...state,
+                signin: action.payload,
+            }
+        case 'SIGNOUT':
+            return {
+                ...state,
+                signout: action.payload,
+            }
         default:
             return state;
     }

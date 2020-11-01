@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,6 +10,9 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link } from '@material-ui/core';
+import { useStateValue } from '../../state';
+import { baseUrl } from '../../constants';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,8 +46,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MenuBar: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const [ { auth }, dispatch] = useStateValue();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  React.useEffect(() => {
+    void (async () => {
+      try {
+        await axios.get<void>(`${baseUrl}/auth/check`);
+        dispatch({ type: 'SET_USER', payload: true });
+      } catch (err) {
+        dispatch({ type: 'SET_USER', payload: false });
+      }
+    })();
+  }, [dispatch]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -65,6 +82,22 @@ const MenuBar: React.FC = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleSignIn = () => {
+    handleMenuClose();
+    history.push("/signin");
+  }
+
+  const handleSignOut = async (): Promise<void> => {
+    try {
+      handleMenuClose();
+      await axios.get<void>(`${baseUrl}/auth/signout`);
+      dispatch({ type: 'SET_USER', payload: false });
+      dispatch({ type: 'SIGNOUT', payload: true });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -76,8 +109,12 @@ const MenuBar: React.FC = () => {
       open={ isMenuOpen }
       onClose={ handleMenuClose }
     >
-      <MenuItem onClick={ handleMenuClose }>My account</MenuItem>
-      <MenuItem onClick={ handleMenuClose }>Sign out</MenuItem>
+    {
+      auth ?
+      <MenuItem onClick={ handleSignOut }>Sign out</MenuItem>
+       : 
+      <MenuItem onClick={ handleSignIn }>Sign in</MenuItem>
+    }
     </Menu>
   );
 
