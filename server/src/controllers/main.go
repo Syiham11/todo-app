@@ -18,6 +18,10 @@ type HandlerInterface interface {
 	GetTodoByID(c *gin.Context)
 	GetTodosByUploader(c *gin.Context)
 	GetTodos(c *gin.Context)
+
+	SetTodoByID(c *gin.Context)
+
+	DelTodoByID(c *gin.Context)
 }
 
 type Handler struct {

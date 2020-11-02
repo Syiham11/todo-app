@@ -24,7 +24,7 @@ func (h *Handler) AddTodo(c *gin.Context) {
 	session := sessions.Default(c)
 	username := session.Get("session-username").(string)
 
-	err = h.db.AddTodo(todo, username)
+	err = h.db.AddTodo(username, todo)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -88,4 +88,53 @@ func (h *Handler) GetTodosByUploader(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, todos)
+}
+
+func (h *Handler) SetTodoByID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if h.db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		return
+	}
+
+	var todo models.Todo
+	err = c.ShouldBindJSON(&todo)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
+	err = h.db.SetTodoByID(id, todo)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.AbortWithStatus(http.StatusOK)
+}
+
+func (h *Handler) DelTodoByID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if h.db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		return
+	}
+
+	err = h.db.DelTodoByID(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.AbortWithStatus(http.StatusOK)
 }

@@ -44,8 +44,8 @@ func RunServerWithHandler(port string, handler controllers.HandlerInterface) err
 			todoGroup.POST("", middlewares.IsSigned(), handler.AddTodo)
 
 			todoGroup.GET("/id/:id", handler.GetTodoByID)
-			todoGroup.PUT("/id/:id", middlewares.IsSigned(), handler.GetTodoByID)
-			todoGroup.DELETE("/id/:id", middlewares.IsSigned(), handler.GetTodoByID)
+			todoGroup.PUT("/id/:id", middlewares.IsSigned(), handler.SetTodoByID)
+			todoGroup.DELETE("/id/:id", middlewares.IsSigned(), handler.DelTodoByID)
 
 			todoGroup.GET("/uploader/:id", handler.GetTodosByUploader)
 		}

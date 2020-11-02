@@ -9,8 +9,8 @@ type Todo struct {
 	Uploader    int    `gorm:"column:uploader" json:"uploader"`
 	Title       string `gorm:"column:title" json:"title" binding:"required"`
 	Description string `gorm:"column:description" json:"description" binding:"required"`
-	Favorite    bool   `gorm:column:favorite" json:"favorite"`
-	Complete    bool   `gorm:column:complete" json:"complete"`
+	Favorite    *bool  `gorm:"column:favorite" json:"favorite"`
+	Complete    *bool  `gorm:"column:complete" json:"complete"`
 }
 
 type TodoDto struct {
