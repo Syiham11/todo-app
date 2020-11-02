@@ -70,8 +70,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const Board: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const [tab, setTab] = React.useState(0);
-  const [, setError] = React.useState('');
+  const [tab, setTab] = React.useState<number>(0);
+  const [, setError] = React.useState<string>('');
   const [{ todos }, dispatch] = useStateValue();
 
   React.useEffect(() => {
@@ -85,7 +85,7 @@ const Board: React.FC = () => {
     })();
   }, [dispatch]);
 
-  const tabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const tabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
   };
 
@@ -102,7 +102,7 @@ const Board: React.FC = () => {
   const deleteTodo = async (todo: Todo): Promise<void> => {
     try {
       await axios.delete<unknown>(`${baseUrl}/todo/id/${todo.id}`);
-      dispatch({ type: 'DEL_TODO', payload: todo});
+      dispatch({ type: 'DEL_TODO', payload: todo });
     } catch (err) {
       setError(err!.response!.data!.error);
       console.log(err);
@@ -133,10 +133,10 @@ const Board: React.FC = () => {
           <Contents todos={ Object.values(todos) } onUpdate={ updateTodo } onDelete={ deleteTodo } />
         </TabPanel>
         <TabPanel value={ tab } index={ 1 } dir={ theme.direction }>
-          <Contents todos={ Object.values(todos).filter(todo => todo.flag) } onUpdate={ updateTodo } onDelete={ deleteTodo } />
+          <Contents todos={ Object.values(todos).filter(todo => todo.complete) } onUpdate={ updateTodo } onDelete={ deleteTodo } />
         </TabPanel>
         <TabPanel value={ tab } index={ 2 } dir={theme.direction}>
-          <Contents todos={ Object.values(todos).filter(todo => !todo.flag) } onUpdate={ updateTodo } onDelete={ deleteTodo } />
+          <Contents todos={ Object.values(todos).filter(todo => !todo.complete) } onUpdate={ updateTodo } onDelete={ deleteTodo } />
         </TabPanel>
       </SwipeableViews>
     </div>

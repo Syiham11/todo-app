@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import { Todo } from '../../types';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,11 +62,11 @@ const Contents: React.FC<Props> = ({ todos, onUpdate, onDelete }: Props) => {
               </Typography>
             </CardContent>
             <CardActions className={ classes.controller }>
-              <IconButton aria-label="check" onClick={ () => onUpdate({...todo, flag: !todo.flag }) }>
-                { todo.flag ? <ClearIcon /> : <CheckIcon /> }
+              <IconButton aria-label="check" onClick={ () => onUpdate({ ...todo, complete: !(todo.complete) }) }>
+                { todo.complete ? <ClearIcon /> : <CheckIcon /> }
               </IconButton>
-              <IconButton aria-label="favorite">
-                <FavoriteBorderIcon />
+              <IconButton aria-label="favorite" onClick={ () => onUpdate({ ...todo, favorite: !(todo.favorite) }) }>
+                { todo.favorite ? <Favorite /> : <FavoriteBorder /> }
               </IconButton>
               <IconButton aria-label="delete" onClick={ () => onDelete(todo) }>
                 <DeleteIcon />

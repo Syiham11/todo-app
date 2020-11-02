@@ -3,7 +3,8 @@ export interface Todo {
     uploader: number;
     title: string;
     description: string;
-    flag?: boolean;
+    favorite: boolean;
+    complete: boolean;
 }
 
 export type State = {
