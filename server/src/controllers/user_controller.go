@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/juseongkr/todo-app/server/src/models"
 	"net/http"
+	"time"
 )
 
 func (h *Handler) AuthCheck(c *gin.Context) {
@@ -51,6 +52,8 @@ func (h *Handler) AuthSignIn(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	user.IpAddress = c.ClientIP()
+	user.LastAccess = time.Now().Format("2006-01-02 15:04:05")
 
 	err = h.db.SignInUser(user)
 	if err != nil {

@@ -41,6 +41,8 @@ func (db *DBORM) SignInUser(user models.User) error {
 
 	valid := CheckPasswordHash(password, hash)
 	if valid {
+		db.Model(models.User{}).Where("username = ?", user.Username).Updates(models.User{IpAddress: user.IpAddress, LastAccess: user.LastAccess})
+
 		return nil
 	}
 
