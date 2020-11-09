@@ -1,12 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import useTheme from '@material-ui/core/styles/useTheme';
+import createStyles from '@material-ui/core/styles/createStyles';
+import { Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import { green } from '@material-ui/core/colors';
+import green from '@material-ui/core/colors/green';
 import Box from '@material-ui/core/Box';
 import Contents from '../Contents';
 import { useStateValue } from '../../state';

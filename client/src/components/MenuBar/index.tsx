@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Link } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
 import { useStateValue } from '../../state';
 import { baseUrl } from '../../constants';
 import { useHistory } from 'react-router-dom';

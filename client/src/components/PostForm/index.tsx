@@ -2,12 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Checkbox } from 'formik-material-ui';
-import { makeStyles } from '@material-ui/core/styles';
-import { FormControlLabel, LinearProgress } from '@material-ui/core';
-import { Favorite, FavoriteBorder } from '@material-ui/icons';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 import { baseUrl } from '../../constants';
-import { Alert } from '@material-ui/lab';
 import { useStateValue } from '../../state';
 
 interface Values {
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PostForm: React.FC<Props> = ({ onClose }: Props) => {
   const classes = useStyles();
-  const [{ auth }, ] = useStateValue();
+  const [{ auth }, dispatch] = useStateValue();
   const initValue: Values = {
     title: '',
     description: '',
@@ -57,7 +59,8 @@ const PostForm: React.FC<Props> = ({ onClose }: Props) => {
     try {
       const flag = favorite?.length === 0 ? false : true;
       await axios.post(`${baseUrl}/todo`, { title, description, favorite: flag, complete: false });
-      //dispatch({ type: '', payload: '' });
+      const { data: todos } = await axios.get(`${baseUrl}/todos`);
+      dispatch({ type: 'SET_TODOS', payload: todos });
       onClose();
     } catch (err) {
       console.log(err);
