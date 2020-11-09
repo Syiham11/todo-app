@@ -13,7 +13,7 @@ import (
 
 func Logger() {
 	gin.DisableConsoleColor()
-	f, _ := os.Create("logs/gin.log")
+	f, _ := os.Create("gin.log")
 	gin.DefaultWriter = io.MultiWriter(f)
 }
 

@@ -7,8 +7,8 @@ import (
 type Todo struct {
 	gorm.Model
 	Uploader    int    `gorm:"column:uploader" json:"uploader"`
-	Title       string `gorm:"column:title" json:"title" binding:"required"`
-	Description string `gorm:"column:description" json:"description" binding:"required"`
+	Title       string `gorm:"column:title" json:"title" binding:"required,max=128"`
+	Description string `gorm:"column:description" json:"description" binding:"required,max=1024"`
 	Favorite    *bool  `gorm:"column:favorite" json:"favorite"`
 	Complete    *bool  `gorm:"column:complete" json:"complete"`
 }
@@ -18,8 +18,8 @@ type TodoDto struct {
 	Uploader    int    `json:"uploader"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Favorite    bool   `json:"favorite"`
-	Complete    bool   `json:"complete"`
+	Favorite    *bool  `json:"favorite"`
+	Complete    *bool  `json:"complete"`
 }
 
 func (Todo) TableName() string {
